@@ -6,7 +6,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QDialog
 from PyQt5.QtGui import QImage, QPixmap
 from dict import Ui_MainWindow
-from Threads import msgThread, voiceThread
+import Threads
 from apis import Ui_Dialog
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtCore import Qt, QUrl, QEvent
@@ -17,7 +17,6 @@ class Dialog(QDialog,Ui_Dialog):
     def __init__(self, parent=None):
         super(Dialog, self).__init__(parent)
         self.setupUi(self)
-
         #self.buttonBox.accepted.connect(self.save)
 
     '''def save(self):
@@ -31,38 +30,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton.clicked.connect(self.search)
         self.pushButton_2.clicked.connect(self.voice1)
         self.pushButton_3.clicked.connect(self.voice2)
+        self.pushButton_4.clicked.connect(lambda:self.pic(0))
+        self.pushButton_5.clicked.connect(lambda:self.pic(1))
         self.actionSet_apis.triggered.connect(self.setApis)
         self.lineEdit.returnPressed.connect(self.search)
+        self.checkBox.stateChanged.connect(lambda:self.pic(2))
         
+        self.day()
+        self.pic(3)
+
+        self.az = datetime.date.today()
+
+    def day(self):
         date = datetime.date.today()
-        data = str(date)
         today = LunarDate.from_solar_date(date.year,date.month,date.day)
-        sentence = requests.request('GET',"http://sentence.iciba.com/index.php?c=dailysentence&m=getdetail&title="+data)
+        data = str(date)
         data = data.replace("-","年",1)
         data = data.replace("-","月",1)
         a1 = data+"日"
         a2 = "农历"+today.cn_year+today.animal+"年"+today.cn_month+"月"+today.cn_day+"日"
         a3 = "干支"+today.gz_year+"年"+today.gz_month+"月"+today.gz_day+"日"
-        a = a1+"    "+a2+"    "+a3
-        if sentence.status_code != None:
-            json1 = json.loads(sentence.text)
-            b = json1['content']+"\n"+json1['note']
-            pic2 = json1['picture2'].replace("\\","")
-            res = requests.get(pic2)
-            img = QImage.fromData(res.content)
-            self.label_2.setText(a)
-            self.label_3.setText(b)
-            index = 0.8
-            c = QPixmap.fromImage(img)
-            self.label.setPixmap(c.scaled(int(float(c.width())*index),int(float(c.height())*index),aspectRatioMode=Qt.KeepAspectRatio,transformMode=Qt.SmoothTransformation))
-        else:
-            self.thread = msgThread(t=2)
-            self.thread.finishSignal.connect(self.Change)
-            self.thread.start()
-            
-        self.player = QMediaPlayer()
-        self.player.setVolume(100)
-            
+        a = a1+"\n"+a2+"\n"+a3
+        self.label_2.setText(a)
+        return date
+
+
     def setApis(self):
         self.dialog = Dialog()
         self.dialog.show()
@@ -79,6 +71,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMessageBox.warning(self, "错误", a, QMessageBox.Yes)
         self.thread.terminate()
 
+    def picChange(self, num):
+        m = "http://sentence.iciba.com/index.php?c=dailysentence&m=getdetail&title="
+        match num:
+            case 0:
+                self.az += datetime.timedelta(days=1)
+                if self.az != self.day():
+                    self.pushButton_4.setEnabled(True)
+                else:
+                    self.pushButton_4.setEnabled(False)
+            case 1:
+                self.az -= datetime.timedelta(days=1)
+                self.pushButton_4.setEnabled(True)
+        pic = requests.request('GET',m+str(self.az))
+        json1 = json.loads(pic.text)
+        b = json1['content']+"\n"+json1['note']
+        self.label_3.setText(b)
+        pic2 = json1['picture2'].replace("\\","")
+        res = requests.get(pic2)
+        img = QImage.fromData(res.content)
+        self.label.setPixmap(QPixmap.fromImage(img))
+        self.thread.terminate()
+                
+
     def search(self):
         a = self.lineEdit.text()
         if a != "":
@@ -86,7 +101,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if means.status_code != None:
                 json2 = json.loads(means.text)
                 if re.match('[^a-zA-Z]', a):
-                    self.thread = msgThread(t=1)
+                    self.thread = Threads.msgThread(t=1)
                     self.thread.finishSignal.connect(self.Change)
                     self.thread.start()
                 else:
@@ -113,19 +128,57 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 for h in range(0,len(json2['web'][i]['value'])):
                                     self.listWidget_2.addItem((json2['web'][i]['value'][h]))     
                     else:
-                        self.thread = msgThread(t=1)
+                        self.thread =  Threads.msgThread(t=1)
                         self.thread.finishSignal.connect(self.Change)
                         self.thread.start()
             else:
-                self.thread = msgThread(t=2)
+                self.thread =  Threads.msgThread(t=2)
                 self.thread.finishSignal.connect(self.Change)
                 self.thread.start()   
         else:
-            self.thread = msgThread(t=0)
-            self.thread.finishSignal.connect(self.Change)
+            self.thread = Threads.msgThread(t=0)
+            self.thread.finishSignal.connect(self.picChange)
             self.thread.start()
 
+    def pic(self, num):   
+        a = "http://sentence.iciba.com/index.php?c=dailysentence&m=getdetail&title="
+        sentence = requests.request('GET',a+str(self.day()))
+        if sentence.status_code != None:
+            self.pushButton_5.setEnabled(True)
+            self.pushButton_5.setText("上一张")
+            self.pushButton_4.setText("下一张")
+            match num:
+                case 0:
+                    self.thread =  Threads.picThread(t=0)
+                    self.thread.finishSignal.connect(self.picChange)
+                    self.thread.start()
+                case 1:
+                    self.thread = Threads.picThread(t=1)
+                    self.thread.finishSignal.connect(self.picChange)
+                    self.thread.start()
+                case 2:
+                    if self.checkBox.checkState() == 2:
+                        self.label.show()
+                    elif self.checkBox.checkState() == 0:
+                        self.label.hide()
+                case 3:
+                    json1 = json.loads(sentence.text)
+                    b = json1['content']+"\n"+json1['note']
+                    self.label_3.setText(b)
+                    pic2 = json1['picture2'].replace("\\","")
+                    res = requests.get(pic2)
+                    img = QImage.fromData(res.content)
+                    self.label.setPixmap(QPixmap.fromImage(img))
+                    self.checkBox.setEnabled(True)
+                    self.checkBox.setChecked(True)
+        else:
+            self.thread =  Threads.msgThread(t=2)
+            self.thread.finishSignal.connect(self.Change)
+            self.thread.start()
+                 
     def voice(self,num):
+        self.player = QMediaPlayer()
+        self.player.setVolume(100)
         a = ""
         match num:
             case 0:
@@ -137,12 +190,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.thread.terminate()
 
     def voice1(self):
-        self.thread = voiceThread(t=0)
+        self.thread =  Threads.voiceThread(t=0)
         self.thread.finishSignal.connect(self.voice)
         self.thread.start()
 
     def voice2(self):       
-        self.thread = voiceThread(t=1)
+        self.thread =  Threads.voiceThread(t=1)
         self.thread.finishSignal.connect(self.voice)
         self.thread.start()
 
