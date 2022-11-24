@@ -31,7 +31,6 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("等线")
         self.label.setFont(font)
-        self.label.setScaledContents(True)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 16, 0, 1, 7)
         self.listWidget_2 = QtWidgets.QListWidget(self.centralwidget)

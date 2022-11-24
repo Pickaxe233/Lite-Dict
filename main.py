@@ -4,12 +4,12 @@ import datetime
 from borax.calendars.lunardate import LunarDate
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QDialog
-from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtGui import QImage, QPixmap, QFont
 from dict import Ui_MainWindow
 import Threads
 from apis import Ui_Dialog
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-from PyQt5.QtCore import Qt, QUrl, QEvent
+from PyQt5.QtCore import Qt, QUrl, QEvent, QSize
 import re
 #import platform
 
@@ -106,6 +106,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.thread.start()
                 else:
                     if len(json2) == 5: 
+                        self.listWidget.clear()
+                        self.listWidget.scrollToTop()
                         if len(json2['basic']) == 4:
                             a = "英音：/"+json2['basic']['uk-phonetic']+"/"
                             b = "美音：/"+json2['basic']['us-phonetic']+"/"
@@ -113,13 +115,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             self.pushButton_2.setEnabled(True)
                             self.pushButton_3.setText(b)
                             self.pushButton_3.setEnabled(True)
-                        c=json2['basic']['explains'][0].split(".",1)
-                        d = c[1].split("；")
-                        self.listWidget.clear()
-                        self.listWidget.scrollToTop()
-                        for i in range(0,len(d)):
-                            a = str(i+1)+". "+str(c[0])+". "+str(d[i])
-                            self.listWidget.addItem(a)  
+                            c=json2['basic']['explains'][0].split(".",1)
+                            if len(c) > 1:
+                                d = c[1].split("；")
+                                for i in range(0,len(d)):
+                                    a = str(i+1)+". "+str(c[0])+". "+str(d[i])
+                                    self.listWidget.addItem(a) 
+                            else:
+                                self.listWidget.addItem(c[0])
                         if len(json2) > 3:                                  
                             self.listWidget_2.clear()
                             self.listWidget_2.scrollToTop()     
@@ -144,9 +147,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         a = "http://sentence.iciba.com/index.php?c=dailysentence&m=getdetail&title="
         sentence = requests.request('GET',a+str(self.day()))
         if sentence.status_code != None:
-            self.pushButton_5.setEnabled(True)
-            self.pushButton_5.setText("上一张")
-            self.pushButton_4.setText("下一张")
             match num:
                 case 0:
                     self.thread =  Threads.picThread(t=0)
@@ -162,17 +162,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     elif self.checkBox.checkState() == 0:
                         self.label.hide()
                 case 3:
-                    json1 = json.loads(sentence.text)
-                    b = json1['content']+"\n"+json1['note']
-                    self.label_3.setText(b)
-                    pic2 = json1['picture2'].replace("\\","")
-                    res = requests.get(pic2)
-                    img = QImage.fromData(res.content)
-                    self.label.setPixmap(QPixmap.fromImage(img))
+                    if self.day().month == 11 and self.day().day == 24:
+                        pic = requests.request('GET',"https://static.wikia.nocookie.net/minecraft_zh_gamepedia/images/4/4c/Candle_Cake.png/revision/latest?cb=20201112035153")
+                        img = QImage.fromData(pic.content)
+                        size = QSize(img.width(),img.height())
+                        pix = QPixmap.fromImage(img.scaled(size, Qt.KeepAspectRatio))
+                        self.label.setScaledContents(False)
+                        self.label.setPixmap(pix)
+                        self.label_3.setText("Happy Birthday!\n生日快乐！")
+                        self.label_3.setFont(QFont("Minecraft AE",10))
+                        self.pushButton_4.hide()
+                        self.pushButton_5.hide()
+                        self.checkBox.hide()
+                    else:
+                        json1 = json.loads(sentence.text)
+                        b = json1['content']+"\n"+json1['note']
+                        self.label_3.setText(b)
+                        pic2 = json1['picture2'].replace("\\","")
+                        res = requests.get(pic2)
+                        img = QImage.fromData(res.content)
+                        size = QSize(int(img.width()*0.8),int(img.height()*0.8),)
+                        self.label.setPixmap(QPixmap.fromImage(img.scaled(size, Qt.KeepAspectRatio)))
                     self.checkBox.setEnabled(True)
                     self.checkBox.setChecked(True)
+            self.pushButton_5.setEnabled(True)
+            self.pushButton_5.setText("上一张")
+            self.pushButton_4.setText("下一张")
         else:
-            self.thread =  Threads.msgThread(t=2)
+            self.thread = Threads.msgThread(t=2)
             self.thread.finishSignal.connect(self.Change)
             self.thread.start()
                  
