@@ -7,11 +7,11 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QDialog
 from PyQt5.QtGui import QImage, QPixmap, QFont
 from dict import Ui_MainWindow
 import Threads
-from apis import Ui_Dialog
+from options import Ui_Dialog
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtCore import Qt, QUrl, QEvent, QSize
 import re
-#import platform
+import cn2an
 
 class Dialog(QDialog,Ui_Dialog):
     def __init__(self, parent=None):
@@ -32,7 +32,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_3.clicked.connect(self.voice2)
         self.pushButton_4.clicked.connect(lambda:self.pic(0))
         self.pushButton_5.clicked.connect(lambda:self.pic(1))
-        self.actionSet_apis.triggered.connect(self.setApis)
+        #self.actionSet_apis.triggered.connect(self.settings)
         self.lineEdit.returnPressed.connect(self.search)
         self.checkBox.stateChanged.connect(lambda:self.pic(2))
         
@@ -45,20 +45,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         date = datetime.date.today()
         today = LunarDate.from_solar_date(date.year,date.month,date.day)
         data = str(date)
-        data = data.replace("-","年",1)
-        data = data.replace("-","月",1)
-        a1 = data+"日"
+        data = data.replace("-"," 年 ",1)
+        data = data.replace("-"," 月 ",1)
+        a1 = data+" 日"
         a2 = "农历"+today.cn_year+today.animal+"年"+today.cn_month+"月"+today.cn_day+"日"
         a3 = "干支"+today.gz_year+"年"+today.gz_month+"月"+today.gz_day+"日"
-        a = a1+"\n"+a2+"\n"+a3
+        a = a1+"\n"+a2+"\t"+a3
         self.label_2.setText(a)
         return date
-
-
-    def setApis(self):
+    '''
+    def settings(self):
         self.dialog = Dialog()
         self.dialog.show()
-        
+        '''
     def Change(self, num):
         a = ""
         match num:
@@ -163,13 +162,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         self.label.hide()
                 case 3:
                     if self.day().month == 11 and self.day().day == 24:
+                        b = cn2an.an2cn(int(self.day().year) - 2006)
                         pic = requests.request('GET',"https://static.wikia.nocookie.net/minecraft_zh_gamepedia/images/4/4c/Candle_Cake.png/revision/latest?cb=20201112035153")
                         img = QImage.fromData(pic.content)
                         size = QSize(img.width(),img.height())
                         pix = QPixmap.fromImage(img.scaled(size, Qt.KeepAspectRatio))
                         self.label.setScaledContents(False)
                         self.label.setPixmap(pix)
-                        self.label_3.setText("Happy Birthday!\n生日快乐！")
+                        self.label_3.setText("Happy Birthday!\n"+b+"岁生日快乐！")
                         self.label_3.setFont(QFont("Minecraft AE",10))
                         self.pushButton_4.hide()
                         self.pushButton_5.hide()
