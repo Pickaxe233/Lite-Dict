@@ -317,11 +317,11 @@
      <locale language="Chinese" country="China"/>
     </property>
     <property name="title">
-     <string>设置</string>
+     <string>Options</string>
     </property>
-    <addaction name="actionSet_apis"/>
-    <addaction name="actionPic_sources"/>
-    <addaction name="actionFunctions"/>
+    <addaction name="actionConfigrations"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuLanguages">
     <property name="font">
@@ -333,7 +333,7 @@
      <locale language="Chinese" country="China"/>
     </property>
     <property name="title">
-     <string>语言</string>
+     <string>Languages</string>
     </property>
     <addaction name="action"/>
     <addaction name="actionEnglish"/>
@@ -401,6 +401,16 @@
     <font>
      <family>等线</family>
     </font>
+   </property>
+  </action>
+  <action name="actionConfigrations">
+   <property name="text">
+    <string>Configrations</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>

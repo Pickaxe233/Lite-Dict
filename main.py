@@ -3,11 +3,11 @@ import requests
 import datetime
 from borax.calendars.lunardate import LunarDate
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QDialog, QMenu, QAction
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QDialog, QMenu
 from PyQt5.QtGui import QImage, QPixmap, QFont, QFontDatabase
 from dict import Ui_MainWindow
 import Threads
-from options import Ui_Dialog
+from configs import Ui_Dialog
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtCore import Qt, QSize, QUrl
 import re
@@ -17,10 +17,6 @@ class Dialog(QDialog,Ui_Dialog):
     def __init__(self, parent=None):
         super(Dialog, self).__init__(parent)
         self.setupUi(self)
-        #self.buttonBox.accepted.connect(self.save)
-
-    '''def save(self):
-        if self.buttonBox.accepted'''
                 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
@@ -32,7 +28,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_3.clicked.connect(self.voice2)
         self.pushButton_4.clicked.connect(lambda:self.pic(0))
         self.pushButton_5.clicked.connect(lambda:self.pic(1))
-        #self.actionSet_apis.triggered.connect(self.settings)
+        self.actionConfigrations.triggered.connect(self.configs)
         self.lineEdit.returnPressed.connect(self.search)
         self.listWidget.customContextMenuRequested.connect(self.copy)
         self.listWidget_2.customContextMenuRequested.connect(self.copy1)
@@ -96,11 +92,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         a = a1+"\n"+a2+"\n"+a3
         self.label_2.setText(a)
         return date
-    '''
-    def settings(self):
+
+    def configs(self):
         self.dialog = Dialog()
         self.dialog.show()
-        '''
     
     def focus(self):
         if self.lineEdit.hasFocus:
