@@ -9,7 +9,7 @@ from dict import Ui_MainWindow
 import Threads
 from options import Ui_Dialog
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtCore import Qt, QSize, QUrl
 import re
 import cn2an
 
@@ -42,7 +42,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_7.clicked.connect(self.clear)
         self.comboBox.hide()
         self.comboBox_2.hide()
-        self.comboBox_3.hide()
         
         self.day()
         self.pic(3)
@@ -94,7 +93,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         a1 = data+" 日"
         a2 = "农历"+today.cn_year+today.animal+"年"+today.cn_month+"月"+today.cn_day+"日"
         a3 = "干支"+today.gz_year+"年"+today.gz_month+"月"+today.gz_day+"日"
-        a = a1+"\n"+a2+"\t"+a3
+        a = a1+"\n"+a2+"\n"+a3
         self.label_2.setText(a)
         return date
     '''
