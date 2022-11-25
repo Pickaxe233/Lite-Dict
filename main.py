@@ -4,13 +4,14 @@ import datetime
 from borax.calendars.lunardate import LunarDate
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QDialog, QMenu, QAction
-from PyQt5.QtGui import QImage, QPixmap, QFont
+from PyQt5.QtGui import QImage, QPixmap, QFont, QFontDatabase
 from dict import Ui_MainWindow
 import Threads
 from options import Ui_Dialog
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtCore import Qt, QSize
 import re
+import cn2an
 
 class Dialog(QDialog,Ui_Dialog):
     def __init__(self, parent=None):
@@ -233,6 +234,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         self.label.hide()
                 case 3:
                     if self.day().month == 11 and self.day().day == 24:
+                        id = QFontDatabase.addApplicationFont('./Minecraft_AE.ttf')
+                        name = QFontDatabase.applicationFontFamilies(id)
+                        self.label_3.setFont(QFont(name[0],10))
                         b = cn2an.an2cn(int(self.day().year) - 2006)
                         pic = requests.request('GET',"https://static.wikia.nocookie.net/minecraft_zh_gamepedia/images/4/4c/Candle_Cake.png/revision/latest?cb=20201112035153")
                         img = QImage.fromData(pic.content)
@@ -241,7 +245,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         self.label.setScaledContents(False)
                         self.label.setPixmap(pix)
                         self.label_3.setText("Happy Birthday!\n"+b+"岁生日快乐！")
-                        self.label_3.setFont(QFont("Minecraft AE",10))
+                        self.label_3.setFont(QFont(name[0],10))
                         self.pushButton_4.hide()
                         self.pushButton_5.hide()
                         self.checkBox.hide()
