@@ -3,15 +3,14 @@ import requests
 import datetime
 from borax.calendars.lunardate import LunarDate
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QDialog, QMenu, QAction
 from PyQt5.QtGui import QImage, QPixmap, QFont
 from dict import Ui_MainWindow
 import Threads
 from options import Ui_Dialog
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-from PyQt5.QtCore import Qt, QUrl, QEvent, QSize
+from PyQt5.QtCore import Qt, QSize
 import re
-import cn2an
 
 class Dialog(QDialog,Ui_Dialog):
     def __init__(self, parent=None):
@@ -34,13 +33,57 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_5.clicked.connect(lambda:self.pic(1))
         #self.actionSet_apis.triggered.connect(self.settings)
         self.lineEdit.returnPressed.connect(self.search)
+        self.listWidget.customContextMenuRequested.connect(self.copy)
+        self.listWidget_2.customContextMenuRequested.connect(self.copy1)
+        self.textBrowser.customContextMenuRequested.connect(self.copy2)
         self.checkBox.stateChanged.connect(lambda:self.pic(2))
+        self.pushButton_6.clicked.connect(self.translate)
+        self.pushButton_7.clicked.connect(self.clear)
+        self.comboBox.hide()
+        self.comboBox_2.hide()
+        self.comboBox_3.hide()
         
         self.day()
         self.pic(3)
-
+        self.focus()
+        
         self.az = datetime.date.today()
 
+    def copy(self, position):
+        popMenu = QMenu()
+        cpyAct = popMenu.addAction("&Copy")
+        hitIndex = self.listWidget.indexAt(position).column()
+        if hitIndex > -1:
+            action = popMenu.exec_(self.listWidget.mapToGlobal(position))
+            if action == cpyAct:
+                cp = QApplication.clipboard()
+                cp.setText(self.listWidget.item(hitIndex).text())
+
+    def copy1(self, position):
+        popMenu = QMenu()
+        cpyAct = popMenu.addAction("&Copy")
+        hitIndex = self.listWidget_2.indexAt(position).row()
+        if hitIndex > -1:
+            action = popMenu.exec_(self.listWidget_2.mapToGlobal(position))
+            if action == cpyAct:
+                cp = QApplication.clipboard()
+                cp.setText(self.listWidget_2.item(hitIndex).text())
+
+    def copy2(self, position):
+        popMenu = QMenu()
+        cpyAct = popMenu.addAction("&Copy")
+        allAct = popMenu.addAction("Select &All")
+        hitIndex = self.textBrowser.toPlainText()
+        if hitIndex != None:
+            action = popMenu.exec_(self.textBrowser.mapToGlobal(position))
+            if action == cpyAct:
+                cursor = self.textBrowser.textCursor()
+                cp = QApplication.clipboard()
+                cp.setText(cursor.selectedText())
+            elif action == allAct:
+                self.textBrowser.selectAll()
+
+                
     def day(self):
         date = datetime.date.today()
         today = LunarDate.from_solar_date(date.year,date.month,date.day)
@@ -58,11 +101,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.dialog = Dialog()
         self.dialog.show()
         '''
+    
+    def focus(self):
+        if self.lineEdit.hasFocus:
+            self.lineEdit.selectAll()
+        elif self.plainTextEdit.hasFocus:
+            self.plainTextEdit.selectAll()
+
+    def clear(self):
+        self.plainTextEdit.clear()
+        self.textBrowser.clear()
+
     def Change(self, num):
         a = ""
         match num:
             case 0:
-                a = "单词不能为空"
+                a = "输入不能为空"
             case 1:
                 a = "请检查拼写"
             case 2:
@@ -89,7 +143,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pic2 = json1['picture2'].replace("\\","")
         res = requests.get(pic2)
         img = QImage.fromData(res.content)
-        self.label.setPixmap(QPixmap.fromImage(img))
+        size = QSize(int(img.width()*0.5),int(img.height()*0.5),)
+        self.label.setPixmap(QPixmap.fromImage(img.scaled(size,Qt.KeepAspectRatio)))
         self.thread.terminate()
                 
 
@@ -142,6 +197,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.thread.finishSignal.connect(self.picChange)
             self.thread.start()
 
+    def translate(self):
+        a = "http://fanyi.youdao.com/translate?&doctype=json&type=AUTO&i="
+        translate = requests.get(a+self.plainTextEdit.toPlainText())
+        if self.plainTextEdit.toPlainText() != None:
+            if translate.status_code != None:
+                json1 = json.loads(translate.text)
+                self.textBrowser.setText(json1['translateResult'][0][0]['tgt'])
+            else:
+                self.thread = Threads.msgThread(t=2)
+                self.thread.finishSignal.connect(self.Change)
+                self.thread.start()
+        else:
+            self.thread = Threads.msgThread(t=0)
+            self.thread.finishSignal.connect(self.Change)
+            self.thread.start()
+
     def pic(self, num):   
         a = "http://sentence.iciba.com/index.php?c=dailysentence&m=getdetail&title="
         sentence = requests.request('GET',a+str(self.day()))
@@ -181,8 +252,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         pic2 = json1['picture2'].replace("\\","")
                         res = requests.get(pic2)
                         img = QImage.fromData(res.content)
-                        size = QSize(int(img.width()*0.8),int(img.height()*0.8),)
-                        self.label.setPixmap(QPixmap.fromImage(img.scaled(size, Qt.KeepAspectRatio)))
+                        size = QSize(int(img.width()*0.5),int(img.height()*0.5),)
+                        self.label.setPixmap(QPixmap.fromImage(img.scaled(size,Qt.KeepAspectRatio)))
                     self.checkBox.setEnabled(True)
                     self.checkBox.setChecked(True)
             self.pushButton_5.setEnabled(True)
