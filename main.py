@@ -28,7 +28,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_3.clicked.connect(self.voice2)
         self.pushButton_4.clicked.connect(lambda:self.pic(0))
         self.pushButton_5.clicked.connect(lambda:self.pic(1))
-        self.actionConfigrations.triggered.connect(self.configs)
+        #self.actionConfigrations.triggered.connect(self.configs)
         self.lineEdit.returnPressed.connect(self.search)
         self.listWidget.customContextMenuRequested.connect(self.copy)
         self.listWidget_2.customContextMenuRequested.connect(self.copy1)
@@ -164,12 +164,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             self.pushButton_2.setEnabled(True)
                             self.pushButton_3.setText(b)
                             self.pushButton_3.setEnabled(True)
-                            c=json2['basic']['explains'][0].split(".",1)
-                            if len(c) > 1:
-                                d = c[1].split("；")
-                                for i in range(0,len(d)):
-                                    a = str(i+1)+". "+str(c[0])+". "+str(d[i])
-                                    self.listWidget.addItem(a) 
+                            c = json2['basic']['explains']
+                            if len(c[0].split(".",1)) > 1:
+                                for i in range(0,len(c)):
+                                    d = c[i].split(".")
+                                    for h ,f in zip(range(0,len(d)//2), range(0,len(d)//2+1)):
+                                        e = d[f*2-1].split("；")
+                                        for z in range(0,len(e)):
+                                            self.listWidget.addItem(d[2*h]+". "+e[z])
+                                if c[-1].find("【") != -1:
+                                    self.listWidget.addItem(c[-1])
                             else:
                                 self.listWidget.addItem(c[0])
                         if len(json2) > 3:                                  
