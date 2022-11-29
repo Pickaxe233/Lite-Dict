@@ -205,7 +205,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 b = json1['translateResult']
                 c = len(b)
                 if c == 1:
-                    self.textBrowser.setText(b[0]['tgt'])
+                    self.textBrowser.setText(b[0][0]['tgt'])
                 else:
                     self.textBrowser.clear()
                     for i  in range(0,len(b)):
