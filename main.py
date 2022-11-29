@@ -18,7 +18,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
 
-        self.pushButton. clicked.connect(self.search)
+        self.pushButton.clicked.connect(self.search)
         self.pushButton_2.clicked.connect(self.voice1)
         self.pushButton_3.clicked.connect(self.voice2)
         self.pushButton_4.clicked.connect(lambda:self.pic(0))
