@@ -207,10 +207,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if c == 1:
                     self.textBrowser.setText(b[0]['tgt'])
                 else:
-                    self.textBrowser.insertPlainText(b[0][0]['tgt'])
-                    self.textBrowser.insertPlainText(b[0][1]['tgt'])
-                    for i  in range(1,len(json1['translateResult'])):
-                        self.textBrowser.insertPlainText(b[i][0]['tgt'])
+                    self.textBrowser.clear()
+                    for i  in range(0,len(b)):
+                        for h in range(0,len(b[i])):
+                            self.textBrowser.append(b[i][h]['tgt'])
             else:
                 self.thread = Threads.msgThread(t=2)
                 self.thread.finishSignal.connect(self.Change)
