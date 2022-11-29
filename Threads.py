@@ -1,8 +1,8 @@
 import time
-from PyQt5.QtCore import QThread, pyqtSignal
+from PySide6.QtCore import QThread, Signal
 
 class msgThread(QThread):
-    finishSignal = pyqtSignal(int)
+    finishSignal = Signal(int)
 
     def __init__(self, t, parent=None):
         super(msgThread, self).__init__(parent)
@@ -12,7 +12,7 @@ class msgThread(QThread):
         self.finishSignal.emit(int(self.t)) 
 
 class voiceThread(QThread):
-    finishSignal = pyqtSignal(int)
+    finishSignal = Signal(int)
 
     def __init__(self, t, parent=None):
         super(voiceThread, self).__init__(parent)
@@ -22,7 +22,7 @@ class voiceThread(QThread):
         self.finishSignal.emit(int(self.t))
 
 class picThread(QThread):
-    finishSignal = pyqtSignal(int)
+    finishSignal = Signal(int)
 
     def __init__(self, t, parent=None):
         super(picThread, self).__init__(parent)

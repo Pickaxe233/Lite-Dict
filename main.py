@@ -1,34 +1,29 @@
 import json
 import requests
 import datetime
-from borax.calendars.lunardate import LunarDate
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QDialog, QMenu
-from PyQt5.QtGui import QImage, QPixmap, QFont, QFontDatabase
-from dict import Ui_MainWindow
-import Threads
-from configs import Ui_Dialog
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-from PyQt5.QtCore import Qt, QSize, QUrl
 import re
 import cn2an
-
-class Dialog(QDialog,Ui_Dialog):
-    def __init__(self, parent=None):
-        super(Dialog, self).__init__(parent)
-        self.setupUi(self)
+import Threads
+import config
+from borax.calendars.lunardate import LunarDate
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QMenu, QPushButton
+from PySide6.QtGui import QImage, QPixmap, QFont, QFontDatabase
+from ui_dict import Ui_MainWindow
+from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
+from PySide6.QtCore import Qt, QSize, QUrl
                 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
 
-        self.pushButton.clicked.connect(self.search)
+        self.pushButton. clicked.connect(self.search)
         self.pushButton_2.clicked.connect(self.voice1)
         self.pushButton_3.clicked.connect(self.voice2)
         self.pushButton_4.clicked.connect(lambda:self.pic(0))
         self.pushButton_5.clicked.connect(lambda:self.pic(1))
-        #self.actionConfigrations.triggered.connect(self.configs)
+        self.actionConfigrations.triggered.connect(self.configs)
         self.lineEdit.returnPressed.connect(self.search)
         self.listWidget.customContextMenuRequested.connect(self.copy)
         self.listWidget_2.customContextMenuRequested.connect(self.copy1)
@@ -41,7 +36,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.day()
         self.pic(3)
-        self.focus()
         
         self.az = datetime.date.today()
 
@@ -50,7 +44,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         cpyAct = popMenu.addAction("&Copy")
         hitIndex = self.listWidget.indexAt(position).column()
         if hitIndex > -1:
-            action = popMenu.exec_(self.listWidget.mapToGlobal(position))
+            action = popMenu.exec(self.listWidget.mapToGlobal(position))
             if action == cpyAct:
                 cp = QApplication.clipboard()
                 cp.setText(self.listWidget.item(hitIndex).text())
@@ -60,7 +54,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         cpyAct = popMenu.addAction("&Copy")
         hitIndex = self.listWidget_2.indexAt(position).row()
         if hitIndex > -1:
-            action = popMenu.exec_(self.listWidget_2.mapToGlobal(position))
+            action = popMenu.exec(self.listWidget_2.mapToGlobal(position))
             if action == cpyAct:
                 cp = QApplication.clipboard()
                 cp.setText(self.listWidget_2.item(hitIndex).text())
@@ -71,7 +65,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         allAct = popMenu.addAction("Select &All")
         hitIndex = self.textBrowser.toPlainText()
         if hitIndex != None:
-            action = popMenu.exec_(self.textBrowser.mapToGlobal(position))
+            action = popMenu.exec(self.textBrowser.mapToGlobal(position))
             if action == cpyAct:
                 cursor = self.textBrowser.textCursor()
                 cp = QApplication.clipboard()
@@ -94,14 +88,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return date
 
     def configs(self):
-        self.dialog = Dialog()
-        self.dialog.show()
-    
-    def focus(self):
-        if self.lineEdit.hasFocus:
-            self.lineEdit.selectAll()
-        elif self.plainTextEdit.hasFocus:
-            self.plainTextEdit.selectAll()
+        self.a = config.Config()
+        self.a.show()
 
     def clear(self):
         self.plainTextEdit.clear()
@@ -116,7 +104,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 a = "请检查拼写"
             case 2:
                 a = "请检查网络"
-        QMessageBox.warning(self, "错误", a, QMessageBox.Yes)
+        QMessageBox.warning(self, "错误", a, QMessageBox.StandardButton.Yes)
         self.thread.terminate()
 
     def picChange(self, num):
@@ -139,10 +127,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         res = requests.get(pic2)
         img = QImage.fromData(res.content)
         size = QSize(int(img.width()*0.5),int(img.height()*0.5),)
-        self.label.setPixmap(QPixmap.fromImage(img.scaled(size,Qt.KeepAspectRatio)))
+        self.label.setPixmap(QPixmap.fromImage(img.scaled(size,Qt.AspectRatioMode.KeepAspectRatio)))
         self.thread.terminate()
                 
-
     def search(self):
         a = self.lineEdit.text()
         if a != "":
@@ -203,7 +190,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if translate.status_code != None:
                 json1 = json.loads(translate.text)
                 b = json1['translateResult']
-                c = len(b)
+                c = len(b[0][0])
                 if c == 1:
                     self.textBrowser.setText(b[0][0]['tgt'])
                 else:
@@ -247,7 +234,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         pic = requests.request('GET',"https://static.wikia.nocookie.net/minecraft_zh_gamepedia/images/4/4c/Candle_Cake.png/revision/latest?cb=20201112035153")
                         img = QImage.fromData(pic.content)
                         size = QSize(img.width(),img.height())
-                        pix = QPixmap.fromImage(img.scaled(size, Qt.KeepAspectRatio))
+                        pix = QPixmap.fromImage(img.scaled(size, Qt.AspectRatioMode.KeepAspectRatio))
                         self.label.setScaledContents(False)
                         self.label.setPixmap(pix)
                         self.label_3.setText("Happy Birthday!\n"+b+"岁生日快乐！")
@@ -263,7 +250,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         res = requests.get(pic2)
                         img = QImage.fromData(res.content)
                         size = QSize(int(img.width()*0.5),int(img.height()*0.5),)
-                        self.label.setPixmap(QPixmap.fromImage(img.scaled(size,Qt.KeepAspectRatio)))
+                        self.label.setPixmap(QPixmap.fromImage(img.scaled(size,Qt.AspectRatioMode.KeepAspectRatio)))
                     self.checkBox.setEnabled(True)
                     self.checkBox.setChecked(True)
             self.pushButton_5.setEnabled(True)
@@ -276,14 +263,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                  
     def voice(self,num):
         self.player = QMediaPlayer()
-        self.player.setVolume(100)
+        self.audio = QAudioOutput()
+        self.player.setAudioOutput(self.audio)
+        self.audio.setVolume(100)
         a = ""
         match num:
             case 0:
                 a = "http://dict.youdao.com/dictvoice?type=1&audio="
             case 1:
                 a = "http://dict.youdao.com/dictvoice?type=0&audio="
-        self.player.setMedia(QMediaContent(QUrl(a+self.lineEdit.text())))
+        self.player.setSource(QUrl(a+self.lineEdit.text()))
         self.player.play()
         self.thread.terminate()
 
@@ -301,4 +290,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     main_window = MainWindow()
     main_window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
