@@ -7,7 +7,7 @@ import cn2an
 import Threads
 import config
 from borax.calendars.lunardate import LunarDate
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QMenu, QPushButton
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QMenu
 from PySide6.QtGui import QImage, QPixmap, QFont, QFontDatabase
 from ui_dict import Ui_MainWindow
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
@@ -221,9 +221,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.thread.finishSignal.connect(self.picChange)
                     self.thread.start()
                 case 2:
-                    if self.checkBox.checkState() == 2:
+                    if self.checkBox.checkState() == Qt.CheckState.Checked:
                         self.label.show()
-                    elif self.checkBox.checkState() == 0:
+                    elif self.checkBox.checkState() == Qt.CheckState.Unchecked:
                         self.label.hide()
                 case 3:
                     if self.day().month == 11 and self.day().day == 24:
