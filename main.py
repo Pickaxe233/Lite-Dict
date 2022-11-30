@@ -10,7 +10,7 @@ from borax.calendars.lunardate import LunarDate
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QMenu
 from PySide6.QtGui import QImage, QPixmap, QFont, QFontDatabase
 from ui_dict import Ui_MainWindow
-from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
+from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput, QMediaDevices, QAudioDevice
 from PySide6.QtCore import Qt, QSize, QUrl
                 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -264,8 +264,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def voice(self,num):
         self.player = QMediaPlayer()
         self.audio = QAudioOutput()
-        self.player.setAudioOutput(self.audio)
+        self.device = QAudioDevice(QMediaDevices.defaultAudioOutput())
+        self.audio.setDevice(self.device)
         self.audio.setVolume(100)
+        self.player.setAudioOutput(self.audio)
         a = ""
         match num:
             case 0:
