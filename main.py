@@ -267,7 +267,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.audio.setDevice(QMediaDevices.defaultAudioOutput())
         self.audio.setVolume(100)
         self.player.setAudioOutput(self.audio)
-        self.audio.setVolume(100)
         a = ""
         match num:
             case 0:
