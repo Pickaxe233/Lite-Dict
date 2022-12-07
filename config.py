@@ -19,10 +19,11 @@ class Config(QDialog, Ui_Dialog):
         self.tableWidget_2.horizontalHeader().resizeSection(0,self.tableWidget_2.width()//10)
         self.tableWidget_2.horizontalHeader().resizeSection(1,self.tableWidget_2.width()//6)
         self.tableWidget_2.horizontalHeader().resizeSection(2,self.tableWidget_2.width()//6*2)
+        
         #self.tableWidget_2.cellChanged(0,0).connect(self.apis)
 
-    '''def apis(self):
-        1'''
+    #def apis(self):
+        #1
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

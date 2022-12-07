@@ -194,30 +194,30 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.label_2, 17, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
-        '''self.menubar = QMenuBar(MainWindow)
+        self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 1080, 22))
         self.menuOptions = QMenu(self.menubar)
         self.menuOptions.setObjectName(u"menuOptions")
         self.menuOptions.setFont(font)
         self.menuOptions.setLocale(QLocale(QLocale.Chinese, QLocale.China))
-        self.menuLanguages = QMenu(self.menubar)
-        self.menuLanguages.setObjectName(u"menuLanguages")
-        self.menuLanguages.setFont(font)
-        self.menuLanguages.setLocale(QLocale(QLocale.Chinese, QLocale.China))'''
-        #MainWindow.setMenuBar(self.menubar)
-        '''self.statusbar = QStatusBar(MainWindow)
+        #self.menuLanguages = QMenu(self.menubar)
+        #self.menuLanguages.setObjectName(u"menuLanguages")
+        #self.menuLanguages.setFont(font)
+        #self.menuLanguages.setLocale(QLocale(QLocale.Chinese, QLocale.China))
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
-        self.statusbar.setFont(font)'''
-        #MainWindow.setStatusBar(self.statusbar)
+        self.statusbar.setFont(font)
+        MainWindow.setStatusBar(self.statusbar)
 
-        '''self.menubar.addAction(self.menuOptions.menuAction())
-        self.menubar.addAction(self.menuLanguages.menuAction())
+        self.menubar.addAction(self.menuOptions.menuAction())
+        #self.menubar.addAction(self.menuLanguages.menuAction())
         self.menuOptions.addAction(self.actionConfigrations)
         self.menuOptions.addSeparator()
         self.menuOptions.addAction(self.actionAbout)
-        self.menuLanguages.addAction(self.action)
-        self.menuLanguages.addAction(self.actionEnglish)'''
+        #self.menuLanguages.addAction(self.action)
+        #self.menuLanguages.addAction(self.actionEnglish)
 
         self.retranslateUi(MainWindow)
 
@@ -246,7 +246,7 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"-", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        '''self.menuOptions.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
-        self.menuLanguages.setTitle(QCoreApplication.translate("MainWindow", u"Languages", None))'''
+        self.menuOptions.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
+        #self.menuLanguages.setTitle(QCoreApplication.translate("MainWindow", u"Languages", None))
     # retranslateUi
 
