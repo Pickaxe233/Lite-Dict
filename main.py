@@ -31,8 +31,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.checkBox.stateChanged.connect(lambda:self.pic(2))
         self.pushButton_6.clicked.connect(self.translate)
         self.pushButton_7.clicked.connect(self.clear)
-        self.comboBox.hide()
-        self.comboBox_2.hide()
         
         self.day()
         self.pic(3)
