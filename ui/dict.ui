@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1080</width>
+    <width>1280</width>
     <height>720</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1080</width>
+    <width>1280</width>
     <height>720</height>
    </size>
   </property>
@@ -30,17 +30,298 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="18" column="0">
+    <item row="4" column="0" rowspan="2" colspan="2">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="font">
+       <font>
+        <family>等线</family>
+       </font>
+      </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::West</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Tab 1</string>
+       </attribute>
+       <widget class="QWidget" name="gridLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1231</width>
+          <height>571</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <property name="leftMargin">
+          <number>10</number>
+         </property>
+         <property name="topMargin">
+          <number>10</number>
+         </property>
+         <property name="rightMargin">
+          <number>10</number>
+         </property>
+         <property name="bottomMargin">
+          <number>10</number>
+         </property>
+         <item row="2" column="10">
+          <widget class="QPushButton" name="pushButton_4">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="font">
+            <font>
+             <family>等线</family>
+            </font>
+           </property>
+           <property name="text">
+            <string>-</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="8">
+          <widget class="QLabel" name="label_3">
+           <property name="font">
+            <font>
+             <family>等线</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::RichText</enum>
+           </property>
+           <property name="scaledContents">
+            <bool>false</bool>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="indent">
+            <number>3</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="9" alignment="Qt::AlignHCenter">
+          <widget class="QCheckBox" name="checkBox">
+           <property name="text">
+            <string>显示图片</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="11">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="11">
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="8">
+          <widget class="QPushButton" name="pushButton_5">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="font">
+            <font>
+             <family>等线</family>
+            </font>
+           </property>
+           <property name="text">
+            <string>-</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Tab 2</string>
+       </attribute>
+       <widget class="QWidget" name="gridLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1231</width>
+          <height>571</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <property name="leftMargin">
+          <number>10</number>
+         </property>
+         <property name="topMargin">
+          <number>10</number>
+         </property>
+         <item row="3" column="0" colspan="6">
+          <widget class="QListWidget" name="listWidget_2">
+           <property name="font">
+            <font>
+             <family>等线</family>
+            </font>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="0" colspan="3">
+          <widget class="QPushButton" name="pushButton_2">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>等线</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>-</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="5">
+          <widget class="QLabel" name="label_2">
+           <property name="font">
+            <font>
+             <family>等线</family>
+             <pointsize>20</pointsize>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+           <property name="margin">
+            <number>10</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3" colspan="2">
+          <widget class="QPushButton" name="pushButton_3">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>等线</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>-</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="6">
+          <widget class="QListWidget" name="listWidget">
+           <property name="font">
+            <font>
+             <family>等线</family>
+            </font>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::DefaultContextMenu</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="defaultDropAction">
+            <enum>Qt::IgnoreAction</enum>
+           </property>
+           <property name="isWrapping" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Page</string>
+       </attribute>
+       <widget class="QWidget" name="gridLayoutWidget_3">
+        <property name="geometry">
+         <rect>
+          <x>-1</x>
+          <y>-1</y>
+          <width>1231</width>
+          <height>571</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_4"/>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>Page</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+    <item row="3" column="0">
      <widget class="QLineEdit" name="lineEdit">
       <property name="minimumSize">
        <size>
-        <width>150</width>
-        <height>0</height>
+        <width>300</width>
+        <height>60</height>
        </size>
       </property>
       <property name="font">
        <font>
         <family>等线</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="placeholderText">
@@ -51,21 +332,14 @@
       </property>
      </widget>
     </item>
-    <item row="26" column="3">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
+    <item row="3" column="1">
+     <widget class="QPushButton" name="pushButton">
+      <property name="minimumSize">
        <size>
-        <width>20</width>
-        <height>40</height>
+        <width>0</width>
+        <height>60</height>
        </size>
       </property>
-     </spacer>
-    </item>
-    <item row="18" column="1">
-     <widget class="QPushButton" name="pushButton">
       <property name="font">
        <font>
         <family>等线</family>
@@ -76,226 +350,6 @@
       </property>
      </widget>
     </item>
-    <item row="18" column="9">
-     <widget class="QPushButton" name="pushButton_4">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="font">
-       <font>
-        <family>等线</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-     </widget>
-    </item>
-    <item row="22" column="0" colspan="4">
-     <widget class="Line" name="line">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="18" column="8">
-     <widget class="QCheckBox" name="checkBox">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="font">
-       <font>
-        <family>等线</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>显示图片</string>
-      </property>
-     </widget>
-    </item>
-    <item row="24" column="3">
-     <widget class="QPushButton" name="pushButton_7">
-      <property name="font">
-       <font>
-        <family>等线</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>Clear</string>
-      </property>
-     </widget>
-    </item>
-    <item row="20" column="0" rowspan="2" colspan="2">
-     <widget class="QListWidget" name="listWidget">
-      <property name="font">
-       <font>
-        <family>等线</family>
-       </font>
-      </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::DefaultContextMenu</enum>
-      </property>
-      <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
-      </property>
-      <property name="defaultDropAction">
-       <enum>Qt::IgnoreAction</enum>
-      </property>
-      <property name="isWrapping" stdset="0">
-       <bool>false</bool>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="23" column="0" rowspan="4" colspan="3">
-     <widget class="QPlainTextEdit" name="plainTextEdit"/>
-    </item>
-    <item row="20" column="2" rowspan="2" colspan="2">
-     <widget class="QListWidget" name="listWidget_2">
-      <property name="font">
-       <font>
-        <family>等线</family>
-       </font>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="18" column="6" colspan="2">
-     <widget class="QPushButton" name="pushButton_5">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="font">
-       <font>
-        <family>等线</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-     </widget>
-    </item>
-    <item row="18" column="10">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="27" column="0" colspan="4">
-     <widget class="QTextBrowser" name="textBrowser">
-      <property name="openLinks">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="25" column="3">
-     <widget class="QComboBox" name="comboBox_2"/>
-    </item>
-    <item row="23" column="3">
-     <widget class="QPushButton" name="pushButton_6">
-      <property name="font">
-       <font>
-        <family>等线</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>Translate</string>
-      </property>
-     </widget>
-    </item>
-    <item row="20" column="6" colspan="5">
-     <widget class="QLabel" name="label_3">
-      <property name="font">
-       <font>
-        <family>等线</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="18" column="2" colspan="2">
-     <widget class="QPushButton" name="pushButton_3">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>等线</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-     </widget>
-    </item>
-    <item row="21" column="6" rowspan="8" colspan="5" alignment="Qt::AlignTop">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-    </item>
-    <item row="17" column="1">
-     <widget class="QComboBox" name="comboBox"/>
-    </item>
-    <item row="17" column="2" colspan="2" alignment="Qt::AlignBottom">
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>等线</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-     </widget>
-    </item>
-    <item row="17" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="font">
-       <font>
-        <family>等线</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-      <property name="textFormat">
-       <enum>Qt::AutoText</enum>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -303,8 +357,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1080</width>
-     <height>22</height>
+     <width>1280</width>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOptions">

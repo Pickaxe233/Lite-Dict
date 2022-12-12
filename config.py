@@ -1,4 +1,4 @@
-from ui_configs import Ui_Dialog
+from ui.ui_configs import Ui_Dialog
 from PySide6.QtWidgets import QApplication, QDialog, QHeaderView, QTableWidgetItem, QHBoxLayout, QWidget
 from PySide6.QtCore import Qt
 import sys

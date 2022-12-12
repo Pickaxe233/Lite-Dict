@@ -8,8 +8,8 @@ import Threads
 import config
 from borax.calendars.lunardate import LunarDate
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QMenu
-from PySide6.QtGui import QImage, QPixmap, QFont, QFontDatabase
-from ui_dict import Ui_MainWindow
+from PySide6.QtGui import QImage, QPixmap, QFont, QFontDatabase, QGuiApplication
+from ui.ui_dict import Ui_MainWindow
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtCore import Qt, QSize, QUrl
                 
@@ -27,10 +27,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.lineEdit.returnPressed.connect(self.search)
         self.listWidget.customContextMenuRequested.connect(self.copy)
         self.listWidget_2.customContextMenuRequested.connect(self.copy1)
-        self.textBrowser.customContextMenuRequested.connect(self.copy2)
+        #self.textBrowser.customContextMenuRequested.connect(self.copy2)
         self.checkBox.stateChanged.connect(lambda:self.pic(2))
-        self.pushButton_6.clicked.connect(self.translate)
-        self.pushButton_7.clicked.connect(self.clear)
+        #self.pushButton_6.clicked.connect(self.translate)
+        #self.pushButton_7.clicked.connect(self.clear)
         
         self.day()
         self.pic(3)
@@ -76,6 +76,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             elif action == allAct:
                 self.textBrowser.selectAll()
 
+    def maxmin(self):
+        if self.isMaximized:
+            self.maxi
                 
     def day(self):
         date = datetime.date.today()
@@ -86,8 +89,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         a1 = data+" 日"
         a2 = "农历"+today.cn_year+today.animal+"年"+today.cn_month+"月"+today.cn_day+"日"
         a3 = "干支"+today.gz_year+"年"+today.gz_month+"月"+today.gz_day+"日"
-        a = a1+"\n"+a2+"\n"+a3
-        self.label_2.setText(a)
+        a = a1+"\t"+a2+"\t"+a3
+        self.lineEdit.setPlaceholderText(a)
         return date
 
     def configs(self):
@@ -129,8 +132,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pic2 = json1['picture2'].replace("\\","")
         res = requests.get(pic2)
         img = QImage.fromData(res.content)
-        size = QSize(int(img.width()*0.5),int(img.height()*0.5),)
-        self.label.setPixmap(QPixmap.fromImage(img.scaled(size,Qt.AspectRatioMode.KeepAspectRatio)))
+        self.label.setPixmap(QPixmap.fromImage(img))
         self.thread.terminate()
                 
     def search(self):
@@ -144,14 +146,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.thread.finishSignal.connect(self.Change)
                     self.thread.start()
                 else:
+                    self.label_2.setText(a)
+                    self.tabWidget.setCurrentIndex(1)
                     if len(json2) == 5: 
                         self.listWidget.clear()
                         self.listWidget.scrollToTop()
                         if len(json2['basic']) == 4:
-                            a = "英音：/"+json2['basic']['uk-phonetic']+"/"
-                            b = "美音：/"+json2['basic']['us-phonetic']+"/"
+                            id = QFontDatabase.addApplicationFont('./font/GentiumPlus-Regular.ttf')
+                            name = QFontDatabase.applicationFontFamilies(id)
+                            a = "BrE:/"+json2['basic']['uk-phonetic']+"/"
+                            b = "AmE:/"+json2['basic']['us-phonetic']+"/"
+                            self.pushButton_2.setFont(name)
                             self.pushButton_2.setText(a)
                             self.pushButton_2.setEnabled(True)
+                            self.pushButton_3.setFont(name)
                             self.pushButton_3.setText(b)
                             self.pushButton_3.setEnabled(True)
                             c = json2['basic']['explains']
@@ -186,7 +194,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.thread.finishSignal.connect(self.Change)
             self.thread.start()
 
-    def translate(self):
+    '''def translate(self):
         a = "http://fanyi.youdao.com/translate?&doctype=json&type=AUTO&i="
         translate = requests.get(a+self.plainTextEdit.toPlainText())
         if self.plainTextEdit.toPlainText() != None:
@@ -208,7 +216,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.thread = Threads.msgThread(t=0)
             self.thread.finishSignal.connect(self.Change)
-            self.thread.start()
+            self.thread.start()'''
 
     def pic(self, num):   
         a = "http://sentence.iciba.com/index.php?c=dailysentence&m=getdetail&title="
@@ -230,7 +238,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         self.label.hide()
                 case 3:
                     if self.day().month == 11 and self.day().day == 24:
-                        id = QFontDatabase.addApplicationFont('./Minecraft_AE.ttf')
+                        id = QFontDatabase.addApplicationFont('./font/Minecraft_AE.ttf')
                         name = QFontDatabase.applicationFontFamilies(id)
                         self.label_3.setFont(QFont(name[0],10))
                         b = cn2an.an2cn(int(self.day().year) - 2006)
@@ -252,8 +260,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         pic2 = json1['picture2'].replace("\\","")
                         res = requests.get(pic2)
                         img = QImage.fromData(res.content)
-                        size = QSize(int(img.width()*0.5),int(img.height()*0.5),)
-                        self.label.setPixmap(QPixmap.fromImage(img.scaled(size,Qt.AspectRatioMode.KeepAspectRatio)))
+                        #size = QSize(self.tabWidget.width())
+                        self.label.setPixmap(QPixmap.fromImage(img))
                     self.checkBox.setEnabled(True)
                     self.checkBox.setChecked(True)
             self.pushButton_5.setEnabled(True)
@@ -286,6 +294,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.thread.start()
 
 if __name__ == '__main__':
+    QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.Floor)
     app = QApplication(sys.argv)
     main_window = MainWindow()
     main_window.show()
