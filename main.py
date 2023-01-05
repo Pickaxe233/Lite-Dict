@@ -2,13 +2,13 @@ import json
 import requests
 import datetime
 import sys
-import re
 import cn2an
-import Threads
+import thread
 import config
+import api.dict as dt
 from borax.calendars.lunardate import LunarDate
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QMenu
-from PySide6.QtGui import QImage, QPixmap, QFont, QFontDatabase, QGuiApplication
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PySide6.QtGui import QImage, QPixmap, QFont, QFontDatabase
 from ui.ui_dict import Ui_MainWindow
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtCore import Qt, QSize, QUrl
@@ -25,10 +25,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_5.clicked.connect(lambda:self.pic(1))
         self.actionConfigrations.triggered.connect(self.configs)
         self.lineEdit.returnPressed.connect(self.search)
-        self.listWidget.customContextMenuRequested.connect(self.copy)
-        self.listWidget_2.customContextMenuRequested.connect(self.copy1)
+        self.pushButton_10.clicked.connect(self.pgup)
+        self.pushButton_8.clicked.connect(self.pgdn)
+        #self.listWidget.customContextMenuRequested.connect(self.copy)
+        #self.listWidget_2.customContextMenuRequested.connect(self.copy1)
         #self.textBrowser.customContextMenuRequested.connect(self.copy2)
-        self.checkBox.stateChanged.connect(lambda:self.pic(2))
+        self.checkBox.stateChanged.connect(self.showPic)
         #self.pushButton_6.clicked.connect(self.translate)
         #self.pushButton_7.clicked.connect(self.clear)
         
@@ -42,7 +44,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.az = datetime.date.today()
 
-    def copy(self, position):
+    def showPic(self):
+        if self.checkBox.checkState() == Qt.CheckState.Checked:
+            self.label.show()
+        elif self.checkBox.checkState() == Qt.CheckState.Unchecked:
+            self.label.hide()
+
+    def pgup(self):
+        if self.stackedWidget.currentIndex() == 0:
+            self.pushButton_10.setEnabled(False)
+        else:
+            self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()-1)
+            self.pushButton_8.setEnabled(True)
+    def pgdn(self):
+        if self.stackedWidget.currentIndex() == 1:
+            self.pushButton_8.setEnabled(False)
+        else:
+            self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()+1)
+            self.pushButton_10.setEnabled(True)
+
+    '''def copy(self, position):
         popMenu = QMenu()
         cpyAct = popMenu.addAction("&Copy")
         hitIndex = self.listWidget.indexAt(position).column()
@@ -60,9 +81,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             action = popMenu.exec(self.listWidget_2.mapToGlobal(position))
             if action == cpyAct:
                 cp = QApplication.clipboard()
-                cp.setText(self.listWidget_2.item(hitIndex).text())
+                cp.setText(self.listWidget_2.item(hitIndex).text())'''
 
-    def copy2(self, position):
+    '''def copy2(self, position):
         popMenu = QMenu()
         cpyAct = popMenu.addAction("&Copy")
         allAct = popMenu.addAction("Select &All")
@@ -78,7 +99,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def maxmin(self):
         if self.isMaximized:
-            self.maxi
+            self.maxi'''
                 
     def day(self):
         date = datetime.date.today()
@@ -97,9 +118,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.a = config.Config()
         self.a.show()
 
-    def clear(self):
+    '''def clear(self):
         self.plainTextEdit.clear()
-        self.textBrowser.clear()
+        self.textBrowser.clear()'''
 
     def Change(self, num):
         a = ""
@@ -134,66 +155,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         img = QImage.fromData(res.content)
         self.label.setPixmap(QPixmap.fromImage(img))
         self.thread.terminate()
-                
+
     def search(self):
         a = self.lineEdit.text()
         if a != "":
-            means = requests.get("http://fanyi.youdao.com/openapi.do?keyfrom=neverland&key=969918857&type=data&doctype=json&version=1.1&q="+a)
-            if means.status_code != None:
-                json2 = json.loads(means.text)
-                if re.match('[^a-zA-Z]', a):
-                    self.thread = Threads.msgThread(t=1)
-                    self.thread.finishSignal.connect(self.Change)
-                    self.thread.start()
-                else:
-                    self.label_2.setText(a)
-                    self.tabWidget.setCurrentIndex(1)
-                    if len(json2) == 5: 
-                        self.listWidget.clear()
-                        self.listWidget.scrollToTop()
-                        if len(json2['basic']) == 4:
-                            id = QFontDatabase.addApplicationFont('./font/GentiumPlus-Regular.ttf')
-                            name = QFontDatabase.applicationFontFamilies(id)
-                            a = "BrE:/"+json2['basic']['uk-phonetic']+"/"
-                            b = "AmE:/"+json2['basic']['us-phonetic']+"/"
-                            self.pushButton_2.setFont(name)
-                            self.pushButton_2.setText(a)
-                            self.pushButton_2.setEnabled(True)
-                            self.pushButton_3.setFont(name)
-                            self.pushButton_3.setText(b)
-                            self.pushButton_3.setEnabled(True)
-                            c = json2['basic']['explains']
-                            if len(c[0].split(".",1)) > 1:
-                                for i in range(0,len(c)):
-                                    d = c[i].split(".")
-                                    for h ,f in zip(range(0,len(d)//2), range(0,len(d)//2+1)):
-                                        e = d[f*2-1].split("；")
-                                        for z in range(0,len(e)):
-                                            self.listWidget.addItem(d[2*h]+". "+e[z])
-                                if c[-1].find("【") != -1:
-                                    self.listWidget.addItem(c[-1])
-                            else:
-                                self.listWidget.addItem(c[0])
-                        if len(json2) > 3:                                  
-                            self.listWidget_2.clear()
-                            self.listWidget_2.scrollToTop()     
-                            for i in range(0,len(json2['web'])):
-                                self.listWidget_2.addItem(json2['web'][i]['key']+":")
-                                for h in range(0,len(json2['web'][i]['value'])):
-                                    self.listWidget_2.addItem((json2['web'][i]['value'][h]))     
-                    else:
-                        self.thread =  Threads.msgThread(t=1)
-                        self.thread.finishSignal.connect(self.Change)
-                        self.thread.start()
-            else:
-                self.thread =  Threads.msgThread(t=2)
-                self.thread.finishSignal.connect(self.Change)
-                self.thread.start()   
-        else:
-            self.thread = Threads.msgThread(t=0)
-            self.thread.finishSignal.connect(self.Change)
-            self.thread.start()
-
+            self.label_2.setText(a)
+            dt.ydtran(a)
+            dt.bing(a)
+            
     '''def translate(self):
         a = "http://fanyi.youdao.com/translate?&doctype=json&type=AUTO&i="
         translate = requests.get(a+self.plainTextEdit.toPlainText())
@@ -224,18 +193,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if sentence.status_code != None:
             match num:
                 case 0:
-                    self.thread =  Threads.picThread(t=0)
+                    self.thread =  thread.picThread(t=0)
                     self.thread.finishSignal.connect(self.picChange)
                     self.thread.start()
                 case 1:
-                    self.thread = Threads.picThread(t=1)
+                    self.thread = thread.picThread(t=1)
                     self.thread.finishSignal.connect(self.picChange)
                     self.thread.start()
-                case 2:
-                    if self.checkBox.checkState() == Qt.CheckState.Checked:
-                        self.label.show()
-                    elif self.checkBox.checkState() == Qt.CheckState.Unchecked:
-                        self.label.hide()
                 case 3:
                     if self.day().month == 11 and self.day().day == 24:
                         id = QFontDatabase.addApplicationFont('./font/Minecraft_AE.ttf')
@@ -268,7 +232,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.pushButton_5.setText("上一张")
             self.pushButton_4.setText("下一张")
         else:
-            self.thread = Threads.msgThread(t=2)
+            self.thread = thread.msgThread(t=2)
             self.thread.finishSignal.connect(self.Change)
             self.thread.start()
                  
@@ -284,12 +248,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.thread.terminate()
 
     def voice1(self):
-        self.thread =  Threads.voiceThread(t=0)
+        self.thread =  thread.voiceThread(t=0)
         self.thread.finishSignal.connect(self.voice)
         self.thread.start()
 
     def voice2(self):       
-        self.thread =  Threads.voiceThread(t=1)
+        self.thread =  thread.voiceThread(t=1)
         self.thread.finishSignal.connect(self.voice)
         self.thread.start()
 
