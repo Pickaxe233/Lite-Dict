@@ -3,13 +3,15 @@ import requests
 import datetime
 import sys
 import cn2an
-import thread
+import threads
 import config
-import api.dict as dt
+import re
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 from borax.calendars.lunardate import LunarDate
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-from PySide6.QtGui import QImage, QPixmap, QFont, QFontDatabase
-from ui.ui_dict import Ui_MainWindow
+from PySide6.QtGui import QImage, QPixmap, QFont, QFontDatabase, QCloseEvent
+from ui.ui_main import Ui_MainWindow
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtCore import Qt, QSize, QUrl
                 
@@ -43,7 +45,52 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.player.setAudioOutput(self.audio)
         
         self.az = datetime.date.today()
+        options = webdriver.EdgeOptions()
+        options.add_argument('headless')
+        options.add_argument('disable-gpu')
+        self.browser = webdriver.Edge(options=options)
+        
+        self.pushButton_2.setFont(QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont('./font/GentiumPlus-Regular.ttf')))
+        self.pushButton_3.setFont(QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont('./font/GentiumPlus-Regular.ttf')))
 
+    def webClose(self):
+        self.browser.close()
+        self.browser.quit()
+        self.Threads.terminate()
+
+    def closeEvent(self, a0: QCloseEvent) -> None:
+        super().closeEvent(a0)
+        self.Threads =  threads.webThread()
+        self.Threads.finishSignal.connect(self.webClose)
+        self.Threads.start()
+    
+    #有道翻译
+    def ydtran(self,a=""):
+        means = requests.get("http://fanyi.youdao.com/openapi.do?keyfrom=neverland&key=969918857&type=data&doctype=json&version=1.1&q="+a)
+        json2 = json.loads(means.text)
+        if len(json2) == 5: 
+            if len(json2['basic']) == 4:          
+                a = "BrE:/"+json2['basic']['uk-phonetic']+"/"
+                b = "AmE:/"+json2['basic']['us-phonetic']+"/"
+                self.pushButton_2.setText(a)
+                self.pushButton_3.setText(b)
+                c = json2['basic']['explains']
+                if len(c) > 1:
+                    for i in range(len(c)):
+                        self.textBrowser.append(c[i])
+                else:
+                    self.textBrowser.append(c[0])
+        else:
+            self.Threads =  threads.msgThread(t=1)
+            self.Threads.finishSignal.connect(self.Change)
+            self.Threads.start()
+
+    #必应词典
+    def bing(self,a=""):
+        self.browser.get(f'https://cn.bing.com/dict/search?q={a}')
+        elem = self.browser.find_element(By.CLASS_NAME, 'lf_area').get_attribute('outerHTML')
+        self.textBrowser_2.setHtml(elem)
+        
     def showPic(self):
         if self.checkBox.checkState() == Qt.CheckState.Checked:
             self.label.show()
@@ -63,6 +110,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()+1)
             self.pushButton_10.setEnabled(True)
 
+    def Change(self, num):
+        a = ""
+        match num:
+            case 0:
+                a = "输入不能为空"
+            case 1:
+                a = "请检查拼写"
+            case 2:
+                a = "请检查网络"
+        QMessageBox.warning(self, "错误", a, QMessageBox.StandardButton.Yes)
+        self.Threads.terminate()
     '''def copy(self, position):
         popMenu = QMenu()
         cpyAct = popMenu.addAction("&Copy")
@@ -122,18 +180,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.plainTextEdit.clear()
         self.textBrowser.clear()'''
 
-    def Change(self, num):
-        a = ""
-        match num:
-            case 0:
-                a = "输入不能为空"
-            case 1:
-                a = "请检查拼写"
-            case 2:
-                a = "请检查网络"
-        QMessageBox.warning(self, "错误", a, QMessageBox.StandardButton.Yes)
-        self.thread.terminate()
-
     def picChange(self, num):
         m = "http://sentence.iciba.com/index.php?c=dailysentence&m=getdetail&title="
         match num:
@@ -159,9 +205,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def search(self):
         a = self.lineEdit.text()
         if a != "":
-            self.label_2.setText(a)
-            dt.ydtran(a)
-            dt.bing(a)
+            if re.match('[^a-zA-Z]', a):
+                self.Threads = threads.msgThread(t=1)
+                self.Threads.finishSignal.connect(self.Change)
+                self.Threads.start()
+            else:
+                self.label_2.setText(a)
+                self.tabWidget.setCurrentIndex(1)
+                if requests.get('https://www.baidu.com').status_code == 200:
+                    self.textBrowser.clear()
+                    self.ydtran(a)
+                    self.bing(a)
+                else:
+                    self.Threads =  threads.msgThread(t=2)
+                    self.Threads.finishSignal.connect(self.Change)
+                    self.Threads.start()  
+        else:
+            self.Threads = threads.msgThread(t=0)
+            self.Threads.finishSignal.connect(self.Change)
+            self.Threads.start()
             
     '''def translate(self):
         a = "http://fanyi.youdao.com/translate?&doctype=json&type=AUTO&i="
@@ -193,11 +255,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if sentence.status_code != None:
             match num:
                 case 0:
-                    self.thread =  thread.picThread(t=0)
+                    self.thread =  threads.picThread(t=0)
                     self.thread.finishSignal.connect(self.picChange)
                     self.thread.start()
                 case 1:
-                    self.thread = thread.picThread(t=1)
+                    self.thread = threads.picThread(t=1)
                     self.thread.finishSignal.connect(self.picChange)
                     self.thread.start()
                 case 3:
@@ -232,7 +294,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.pushButton_5.setText("上一张")
             self.pushButton_4.setText("下一张")
         else:
-            self.thread = thread.msgThread(t=2)
+            self.thread = threads.msgThread(t=2)
             self.thread.finishSignal.connect(self.Change)
             self.thread.start()
                  
@@ -248,12 +310,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.thread.terminate()
 
     def voice1(self):
-        self.thread =  thread.voiceThread(t=0)
+        self.thread =  threads.voiceThread(t=0)
         self.thread.finishSignal.connect(self.voice)
         self.thread.start()
 
     def voice2(self):       
-        self.thread =  thread.voiceThread(t=1)
+        self.thread =  threads.voiceThread(t=1)
         self.thread.finishSignal.connect(self.voice)
         self.thread.start()
 

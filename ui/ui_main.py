@@ -115,7 +115,7 @@ class Ui_MainWindow(object):
         self.tab_2.setObjectName(u"tab_2")
         self.gridLayoutWidget_2 = QWidget(self.tab_2)
         self.gridLayoutWidget_2.setObjectName(u"gridLayoutWidget_2")
-        self.gridLayoutWidget_2.setGeometry(QRect(0, 0, 1231, 571))
+        self.gridLayoutWidget_2.setGeometry(QRect(0, 0, 1221, 571))
         self.gridLayout_3 = QGridLayout(self.gridLayoutWidget_2)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.gridLayout_3.setContentsMargins(10, 10, 0, 0)
@@ -125,7 +125,7 @@ class Ui_MainWindow(object):
         self.page_5.setObjectName(u"page_5")
         self.verticalLayoutWidget = QWidget(self.page_5)
         self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(9, -1, 1211, 481))
+        self.verticalLayoutWidget.setGeometry(QRect(-11, -1, 1211, 441))
         self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -140,7 +140,7 @@ class Ui_MainWindow(object):
         self.page_6.setObjectName(u"page_6")
         self.verticalLayoutWidget_2 = QWidget(self.page_6)
         self.verticalLayoutWidget_2.setObjectName(u"verticalLayoutWidget_2")
-        self.verticalLayoutWidget_2.setGeometry(QRect(9, -1, 1211, 471))
+        self.verticalLayoutWidget_2.setGeometry(QRect(-11, -1, 1211, 441))
         self.verticalLayout_2 = QVBoxLayout(self.verticalLayoutWidget_2)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -206,9 +206,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addItem(self.horizontalSpacer, 1, 4, 1, 4)
 
-        self.pushButton_9 = QPushButton(self.tab_2)
-        self.pushButton_9.setObjectName(u"pushButton_9")
-        self.pushButton_9.setGeometry(QRect(1230, 100, 75, 24))
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QWidget()
         self.tab_3.setObjectName(u"tab_3")
@@ -315,7 +312,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.stackedWidget.setCurrentIndex(0)
 
 
@@ -343,7 +340,6 @@ class Ui_MainWindow(object):
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.pushButton_10.setText(QCoreApplication.translate("MainWindow", u"Page Up", None))
         self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"-", None))
-        self.pushButton_9.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"Tab 2", None))
         self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))

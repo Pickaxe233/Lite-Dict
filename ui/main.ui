@@ -41,7 +41,7 @@
        <enum>QTabWidget::West</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -163,7 +163,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>1231</width>
+          <width>1221</width>
           <height>571</height>
          </rect>
         </property>
@@ -183,10 +183,10 @@
             <widget class="QWidget" name="verticalLayoutWidget">
              <property name="geometry">
               <rect>
-               <x>9</x>
+               <x>-11</x>
                <y>-1</y>
                <width>1211</width>
-               <height>481</height>
+               <height>441</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout">
@@ -204,10 +204,10 @@
             <widget class="QWidget" name="verticalLayoutWidget_2">
              <property name="geometry">
               <rect>
-               <x>9</x>
+               <x>-11</x>
                <y>-1</y>
                <width>1211</width>
-               <height>471</height>
+               <height>441</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -337,19 +337,6 @@
           </spacer>
          </item>
         </layout>
-       </widget>
-       <widget class="QPushButton" name="pushButton_9">
-        <property name="geometry">
-         <rect>
-          <x>1230</x>
-          <y>100</y>
-          <width>75</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>PushButton</string>
-        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_3">
