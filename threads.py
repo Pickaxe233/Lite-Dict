@@ -1,34 +1,26 @@
 from PySide6.QtCore import QThread, Signal
 
-class msgThread(QThread):
+class Thread(QThread):
     finishSignal = Signal(int)
 
     def __init__(self, t, parent=None):
-        super(msgThread, self).__init__(parent)
+        super(Thread, self).__init__(parent)
         self.t = t
 
     def run(self):
         self.finishSignal.emit(int(self.t)) 
 
-class voiceThread(QThread):
-    finishSignal = Signal(int)
+'''class webThread(QThread):
+    finishSignal = Signal()
 
-    def __init__(self, t, parent=None):
-        super(voiceThread, self).__init__(parent)
+    def __init__(self, t, a, parent=None):
+        super(webThread, self).__init__(parent)
         self.t = t
+        self.a = a
 
     def run(self):
         self.finishSignal.emit(int(self.t))
-
-class picThread(QThread):
-    finishSignal = Signal(int)
-
-    def __init__(self, t, parent=None):
-        super(picThread, self).__init__(parent)
-        self.t = t
-
-    def run(self):
-        self.finishSignal.emit(int(self.t))
+        self.finishSignal.emit(str(self.a))'''
         
 class webThread(QThread):
     finishSignal = Signal()

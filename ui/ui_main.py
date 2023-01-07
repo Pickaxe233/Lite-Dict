@@ -17,18 +17,18 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
-    QLabel, QLineEdit, QMainWindow, QMenu,
-    QMenuBar, QPlainTextEdit, QPushButton, QSizePolicy,
-    QSpacerItem, QStackedWidget, QStatusBar, QTabWidget,
-    QTextBrowser, QToolButton, QVBoxLayout, QWidget)
+    QLabel, QLineEdit, QMainWindow, QPlainTextEdit,
+    QPushButton, QSizePolicy, QSpacerItem, QStackedWidget,
+    QStatusBar, QTabWidget, QTextBrowser, QToolButton,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1280, 720)
-        MainWindow.setMinimumSize(QSize(1280, 720))
-        MainWindow.setMaximumSize(QSize(1920, 1080))
+        MainWindow.resize(1600, 900)
+        MainWindow.setMinimumSize(QSize(1600, 900))
+        MainWindow.setMaximumSize(QSize(1600, 900))
         MainWindow.setLocale(QLocale(QLocale.Chinese, QLocale.China))
         self.actionClose = QAction(MainWindow)
         self.actionClose.setObjectName(u"actionClose")
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.tab.setObjectName(u"tab")
         self.gridLayoutWidget = QWidget(self.tab)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(0, 0, 1231, 571))
+        self.gridLayoutWidget.setGeometry(QRect(0, 0, 1551, 781))
         self.gridLayout_2 = QGridLayout(self.gridLayoutWidget)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout_2.setContentsMargins(10, 10, 10, 10)
@@ -115,7 +115,7 @@ class Ui_MainWindow(object):
         self.tab_2.setObjectName(u"tab_2")
         self.gridLayoutWidget_2 = QWidget(self.tab_2)
         self.gridLayoutWidget_2.setObjectName(u"gridLayoutWidget_2")
-        self.gridLayoutWidget_2.setGeometry(QRect(0, 0, 1221, 571))
+        self.gridLayoutWidget_2.setGeometry(QRect(0, 0, 1531, 761))
         self.gridLayout_3 = QGridLayout(self.gridLayoutWidget_2)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.gridLayout_3.setContentsMargins(10, 10, 0, 0)
@@ -125,31 +125,59 @@ class Ui_MainWindow(object):
         self.page_5.setObjectName(u"page_5")
         self.verticalLayoutWidget = QWidget(self.page_5)
         self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(-11, -1, 1211, 441))
+        self.verticalLayoutWidget.setGeometry(QRect(9, -1, 1511, 591))
         self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.textBrowser = QTextBrowser(self.verticalLayoutWidget)
-        self.textBrowser.setObjectName(u"textBrowser")
-        self.textBrowser.setStyleSheet(u"font: 12pt \"\u66f4\u7eb1\u9ed1\u4f53 Mono SC Nerd\";")
+        self.Youdao_Dict = QTextBrowser(self.verticalLayoutWidget)
+        self.Youdao_Dict.setObjectName(u"Youdao_Dict")
+        self.Youdao_Dict.setStyleSheet(u"font: 12pt \"\u66f4\u7eb1\u9ed1\u4f53 Mono SC Nerd\";")
 
-        self.verticalLayout.addWidget(self.textBrowser)
+        self.verticalLayout.addWidget(self.Youdao_Dict)
 
         self.stackedWidget.addWidget(self.page_5)
         self.page_6 = QWidget()
         self.page_6.setObjectName(u"page_6")
         self.verticalLayoutWidget_2 = QWidget(self.page_6)
         self.verticalLayoutWidget_2.setObjectName(u"verticalLayoutWidget_2")
-        self.verticalLayoutWidget_2.setGeometry(QRect(-11, -1, 1211, 441))
+        self.verticalLayoutWidget_2.setGeometry(QRect(9, -1, 1511, 591))
         self.verticalLayout_2 = QVBoxLayout(self.verticalLayoutWidget_2)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.textBrowser_2 = QTextBrowser(self.verticalLayoutWidget_2)
-        self.textBrowser_2.setObjectName(u"textBrowser_2")
+        self.Bing_Dict = QTextBrowser(self.verticalLayoutWidget_2)
+        self.Bing_Dict.setObjectName(u"Bing_Dict")
 
-        self.verticalLayout_2.addWidget(self.textBrowser_2)
+        self.verticalLayout_2.addWidget(self.Bing_Dict)
 
         self.stackedWidget.addWidget(self.page_6)
+        self.page_2 = QWidget()
+        self.page_2.setObjectName(u"page_2")
+        self.verticalLayoutWidget_4 = QWidget(self.page_2)
+        self.verticalLayoutWidget_4.setObjectName(u"verticalLayoutWidget_4")
+        self.verticalLayoutWidget_4.setGeometry(QRect(9, 0, 1511, 591))
+        self.verticalLayout_4 = QVBoxLayout(self.verticalLayoutWidget_4)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.Jinshan_Dict = QTextBrowser(self.verticalLayoutWidget_4)
+        self.Jinshan_Dict.setObjectName(u"Jinshan_Dict")
+
+        self.verticalLayout_4.addWidget(self.Jinshan_Dict)
+
+        self.stackedWidget.addWidget(self.page_2)
+        self.page = QWidget()
+        self.page.setObjectName(u"page")
+        self.verticalLayoutWidget_3 = QWidget(self.page)
+        self.verticalLayoutWidget_3.setObjectName(u"verticalLayoutWidget_3")
+        self.verticalLayoutWidget_3.setGeometry(QRect(9, -1, 1511, 591))
+        self.verticalLayout_3 = QVBoxLayout(self.verticalLayoutWidget_3)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.Hi_Dict = QTextBrowser(self.verticalLayoutWidget_3)
+        self.Hi_Dict.setObjectName(u"Hi_Dict")
+
+        self.verticalLayout_3.addWidget(self.Hi_Dict)
+
+        self.stackedWidget.addWidget(self.page)
 
         self.gridLayout_3.addWidget(self.stackedWidget, 3, 0, 1, 8)
 
@@ -211,7 +239,7 @@ class Ui_MainWindow(object):
         self.tab_3.setObjectName(u"tab_3")
         self.gridLayoutWidget_3 = QWidget(self.tab_3)
         self.gridLayoutWidget_3.setObjectName(u"gridLayoutWidget_3")
-        self.gridLayoutWidget_3.setGeometry(QRect(-1, -1, 1231, 571))
+        self.gridLayoutWidget_3.setGeometry(QRect(9, -1, 1521, 761))
         self.gridLayout_4 = QGridLayout(self.gridLayoutWidget_3)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -266,6 +294,9 @@ class Ui_MainWindow(object):
         self.tab_4 = QWidget()
         self.tab_4.setObjectName(u"tab_4")
         self.tabWidget.addTab(self.tab_4, "")
+        self.tab_5 = QWidget()
+        self.tab_5.setObjectName(u"tab_5")
+        self.tabWidget.addTab(self.tab_5, "")
 
         self.gridLayout.addWidget(self.tabWidget, 4, 0, 2, 2)
 
@@ -285,35 +316,15 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.pushButton, 3, 1, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QMenuBar(MainWindow)
-        self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1280, 30))
-        self.menuOptions = QMenu(self.menubar)
-        self.menuOptions.setObjectName(u"menuOptions")
-        self.menuOptions.setFont(font)
-        self.menuOptions.setLocale(QLocale(QLocale.Chinese, QLocale.China))
-        self.menuLanguages = QMenu(self.menubar)
-        self.menuLanguages.setObjectName(u"menuLanguages")
-        self.menuLanguages.setFont(font)
-        self.menuLanguages.setLocale(QLocale(QLocale.Chinese, QLocale.China))
-        MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         self.statusbar.setFont(font)
         MainWindow.setStatusBar(self.statusbar)
 
-        self.menubar.addAction(self.menuOptions.menuAction())
-        self.menubar.addAction(self.menuLanguages.menuAction())
-        self.menuOptions.addAction(self.actionConfigrations)
-        self.menuOptions.addSeparator()
-        self.menuOptions.addAction(self.actionAbout)
-        self.menuLanguages.addAction(self.action)
-        self.menuLanguages.addAction(self.actionEnglish)
-
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
-        self.stackedWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -334,21 +345,20 @@ class Ui_MainWindow(object):
         self.checkBox.setText(QCoreApplication.translate("MainWindow", u"\u663e\u793a\u56fe\u7247", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"-", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Tab 1", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Home", None))
         self.pushButton_8.setText(QCoreApplication.translate("MainWindow", u"Page Down", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"-", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.pushButton_10.setText(QCoreApplication.translate("MainWindow", u"Page Up", None))
         self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"-", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"Tab 2", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"Dict", None))
         self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         self.toolButton.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("MainWindow", u"Page", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QCoreApplication.translate("MainWindow", u"Page", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QCoreApplication.translate("MainWindow", u"Translator", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), QCoreApplication.translate("MainWindow", u"Notebook", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_5), QCoreApplication.translate("MainWindow", u"Settings", None))
         self.lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u8bf7\u8f93\u5165\u8981\u67e5\u8be2\u7684\u5355\u8bcd", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Search", None))
-        self.menuOptions.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
-        self.menuLanguages.setTitle(QCoreApplication.translate("MainWindow", u"Languages", None))
     # retranslateUi
 

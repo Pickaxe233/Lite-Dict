@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
-    <height>720</height>
+    <width>1600</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1280</width>
-    <height>720</height>
+    <width>1600</width>
+    <height>900</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1920</width>
-    <height>1080</height>
+    <width>1600</width>
+    <height>900</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -41,19 +41,19 @@
        <enum>QTabWidget::West</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>Tab 1</string>
+        <string>Home</string>
        </attribute>
        <widget class="QWidget" name="gridLayoutWidget">
         <property name="geometry">
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>1231</width>
-          <height>571</height>
+          <width>1551</width>
+          <height>781</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
@@ -156,15 +156,15 @@
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
-        <string>Tab 2</string>
+        <string>Dict</string>
        </attribute>
        <widget class="QWidget" name="gridLayoutWidget_2">
         <property name="geometry">
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>1221</width>
-          <height>571</height>
+          <width>1531</width>
+          <height>761</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
@@ -177,21 +177,21 @@
          <item row="3" column="0" colspan="8">
           <widget class="QStackedWidget" name="stackedWidget">
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="page_5">
             <widget class="QWidget" name="verticalLayoutWidget">
              <property name="geometry">
               <rect>
-               <x>-11</x>
+               <x>9</x>
                <y>-1</y>
-               <width>1211</width>
-               <height>441</height>
+               <width>1511</width>
+               <height>591</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout">
               <item>
-               <widget class="QTextBrowser" name="textBrowser">
+               <widget class="QTextBrowser" name="Youdao_Dict">
                 <property name="styleSheet">
                  <string notr="true">font: 12pt &quot;更纱黑体 Mono SC Nerd&quot;;</string>
                 </property>
@@ -204,15 +204,49 @@
             <widget class="QWidget" name="verticalLayoutWidget_2">
              <property name="geometry">
               <rect>
-               <x>-11</x>
+               <x>9</x>
                <y>-1</y>
-               <width>1211</width>
-               <height>441</height>
+               <width>1511</width>
+               <height>591</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_2">
               <item>
-               <widget class="QTextBrowser" name="textBrowser_2"/>
+               <widget class="QTextBrowser" name="Bing_Dict"/>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+           <widget class="QWidget" name="page_2">
+            <widget class="QWidget" name="verticalLayoutWidget_4">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>0</y>
+               <width>1511</width>
+               <height>591</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <widget class="QTextBrowser" name="Jinshan_Dict"/>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+           <widget class="QWidget" name="page">
+            <widget class="QWidget" name="verticalLayoutWidget_3">
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>-1</y>
+               <width>1511</width>
+               <height>591</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <item>
+               <widget class="QTextBrowser" name="Hi_Dict"/>
               </item>
              </layout>
             </widget>
@@ -341,15 +375,15 @@
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
-        <string>Page</string>
+        <string>Translator</string>
        </attribute>
        <widget class="QWidget" name="gridLayoutWidget_3">
         <property name="geometry">
          <rect>
-          <x>-1</x>
+          <x>9</x>
           <y>-1</y>
-          <width>1231</width>
-          <height>571</height>
+          <width>1521</width>
+          <height>761</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
@@ -430,7 +464,12 @@
       </widget>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
-        <string>Page</string>
+        <string>Notebook</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_5">
+       <attribute name="title">
+        <string>Settings</string>
        </attribute>
       </widget>
      </widget>
@@ -476,49 +515,6 @@
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1280</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuOptions">
-    <property name="font">
-     <font>
-      <family>等线</family>
-     </font>
-    </property>
-    <property name="locale">
-     <locale language="Chinese" country="China"/>
-    </property>
-    <property name="title">
-     <string>Options</string>
-    </property>
-    <addaction name="actionConfigrations"/>
-    <addaction name="separator"/>
-    <addaction name="actionAbout"/>
-   </widget>
-   <widget class="QMenu" name="menuLanguages">
-    <property name="font">
-     <font>
-      <family>等线</family>
-     </font>
-    </property>
-    <property name="locale">
-     <locale language="Chinese" country="China"/>
-    </property>
-    <property name="title">
-     <string>Languages</string>
-    </property>
-    <addaction name="action"/>
-    <addaction name="actionEnglish"/>
-   </widget>
-   <addaction name="menuOptions"/>
-   <addaction name="menuLanguages"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="font">

@@ -4,7 +4,6 @@ import datetime
 import sys
 import cn2an
 import threads
-import config
 import re
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -58,9 +57,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.browser.quit()
         self.Threads.terminate()
 
+    '''def webControl(self,a="",num=4):
+        match num:
+            case 0:'''
+                
+        
     def closeEvent(self, a0: QCloseEvent) -> None:
         super().closeEvent(a0)
-        self.Threads =  threads.webThread()
+        self.Threads =  threads.webThread()#t=0,a="")
         self.Threads.finishSignal.connect(self.webClose)
         self.Threads.start()
     
@@ -73,15 +77,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 a = "BrE:/"+json2['basic']['uk-phonetic']+"/"
                 b = "AmE:/"+json2['basic']['us-phonetic']+"/"
                 self.pushButton_2.setText(a)
+                self.pushButton_2.setEnabled(True)
                 self.pushButton_3.setText(b)
+                self.pushButton_3.setEnabled(True)
                 c = json2['basic']['explains']
                 if len(c) > 1:
                     for i in range(len(c)):
-                        self.textBrowser.append(c[i])
+                        self.Youdao_Dict.append(c[i])
                 else:
-                    self.textBrowser.append(c[0])
+                    self.Youdao_Dict.append(c[0])
         else:
-            self.Threads =  threads.msgThread(t=1)
+            self.Threads =  threads.Thread(t=1)
             self.Threads.finishSignal.connect(self.Change)
             self.Threads.start()
 
@@ -89,8 +95,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def bing(self,a=""):
         self.browser.get(f'https://cn.bing.com/dict/search?q={a}')
         elem = self.browser.find_element(By.CLASS_NAME, 'lf_area').get_attribute('outerHTML')
-        self.textBrowser_2.setHtml(elem)
-        
+        self.Bing_Dict.setHtml(elem)
+    
+    #海词    
+    def hidi(self,a=""):
+        self.browser.get(f'https://dict.cn/{a}')
+        elem = self.browser.find_element(By.CLASS_NAME, 'main').get_attribute('outerHTML')
+        self.Hi_Dict.setHtml(elem)
+    
+    #爱词霸
+    def ici(self,a=""):
+        self.browser.get(f'https://www.iciba.com/word?w={a}')
+        elem = self.browser.find_element(By.CLASS_NAME, 'Content_center__z9WQY').get_attribute('outerHTML')
+        self.Jinshan_Dict.setHtml(elem)
+    
     def showPic(self):
         if self.checkBox.checkState() == Qt.CheckState.Checked:
             self.label.show()
@@ -110,7 +128,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()+1)
             self.pushButton_10.setEnabled(True)
 
-    def Change(self, num):
+    def Change(self, num=3):
         a = ""
         match num:
             case 0:
@@ -206,22 +224,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         a = self.lineEdit.text()
         if a != "":
             if re.match('[^a-zA-Z]', a):
-                self.Threads = threads.msgThread(t=1)
+                self.Threads = threads.Thread(t=1)
                 self.Threads.finishSignal.connect(self.Change)
                 self.Threads.start()
             else:
                 self.label_2.setText(a)
                 self.tabWidget.setCurrentIndex(1)
                 if requests.get('https://www.baidu.com').status_code == 200:
-                    self.textBrowser.clear()
+                    self.Hi_Dict.clear()
+                    self.Youdao_Dict.clear()
+                    self.Bing_Dict.clear()
+                    self.Jinshan_Dict.clear()
                     self.ydtran(a)
                     self.bing(a)
+                    self.ici(a)
+                    self.hidi(a)
                 else:
-                    self.Threads =  threads.msgThread(t=2)
+                    self.Threads =  threads.Thread(t=2)
                     self.Threads.finishSignal.connect(self.Change)
                     self.Threads.start()  
         else:
-            self.Threads = threads.msgThread(t=0)
+            self.Threads = threads.Thread(t=0)
             self.Threads.finishSignal.connect(self.Change)
             self.Threads.start()
             
@@ -255,11 +278,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if sentence.status_code != None:
             match num:
                 case 0:
-                    self.thread =  threads.picThread(t=0)
+                    self.thread =  threads.Thread(t=0)
                     self.thread.finishSignal.connect(self.picChange)
                     self.thread.start()
                 case 1:
-                    self.thread = threads.picThread(t=1)
+                    self.thread = threads.Thread(t=1)
                     self.thread.finishSignal.connect(self.picChange)
                     self.thread.start()
                 case 3:
@@ -294,7 +317,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.pushButton_5.setText("上一张")
             self.pushButton_4.setText("下一张")
         else:
-            self.thread = threads.msgThread(t=2)
+            self.thread = threads.Thread(t=2)
             self.thread.finishSignal.connect(self.Change)
             self.thread.start()
                  
@@ -310,12 +333,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.thread.terminate()
 
     def voice1(self):
-        self.thread =  threads.voiceThread(t=0)
+        self.thread =  threads.Thread(t=0)
         self.thread.finishSignal.connect(self.voice)
         self.thread.start()
 
     def voice2(self):       
-        self.thread =  threads.voiceThread(t=1)
+        self.thread =  threads.Thread(t=1)
         self.thread.finishSignal.connect(self.voice)
         self.thread.start()
 
