@@ -8,12 +8,12 @@ import re
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from borax.calendars.lunardate import LunarDate
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QLabel
 from PySide6.QtGui import QImage, QPixmap, QFont, QFontDatabase, QCloseEvent
 from ui.ui_main import Ui_MainWindow
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
-from PySide6.QtCore import Qt, QSize, QUrl
-                
+from PySide6.QtCore import Qt, QSize, QUrl, Signal
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -24,19 +24,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_3.clicked.connect(self.voice2)
         self.pushButton_4.clicked.connect(lambda:self.pic(0))
         self.pushButton_5.clicked.connect(lambda:self.pic(1))
-        self.actionConfigrations.triggered.connect(self.configs)
         self.lineEdit.returnPressed.connect(self.search)
-        self.pushButton_10.clicked.connect(self.pgup)
-        self.pushButton_8.clicked.connect(self.pgdn)
         #self.listWidget.customContextMenuRequested.connect(self.copy)
         #self.listWidget_2.customContextMenuRequested.connect(self.copy1)
         #self.textBrowser.customContextMenuRequested.connect(self.copy2)
         self.checkBox.stateChanged.connect(self.showPic)
         #self.pushButton_6.clicked.connect(self.translate)
         #self.pushButton_7.clicked.connect(self.clear)
+        self.toolButton.hide()
         
         self.day()
         self.pic(3)
+        self.selections()
         
         self.player = QMediaPlayer()
         self.audio = QAudioOutput()
@@ -56,77 +55,57 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.browser.close()
         self.browser.quit()
         self.Threads.terminate()
-
-    '''def webControl(self,a="",num=4):
-        match num:
-            case 0:'''
-                
-        
+               
     def closeEvent(self, a0: QCloseEvent) -> None:
         super().closeEvent(a0)
         self.Threads =  threads.webThread()#t=0,a="")
         self.Threads.finishSignal.connect(self.webClose)
         self.Threads.start()
     
-    #有道翻译
-    def ydtran(self,a=""):
-        means = requests.get("http://fanyi.youdao.com/openapi.do?keyfrom=neverland&key=969918857&type=data&doctype=json&version=1.1&q="+a)
-        json2 = json.loads(means.text)
-        if len(json2) == 5: 
-            if len(json2['basic']) == 4:          
-                a = "BrE:/"+json2['basic']['uk-phonetic']+"/"
-                b = "AmE:/"+json2['basic']['us-phonetic']+"/"
-                self.pushButton_2.setText(a)
-                self.pushButton_2.setEnabled(True)
-                self.pushButton_3.setText(b)
-                self.pushButton_3.setEnabled(True)
-                c = json2['basic']['explains']
-                if len(c) > 1:
-                    for i in range(len(c)):
-                        self.Youdao_Dict.append(c[i])
-                else:
-                    self.Youdao_Dict.append(c[0])
-        else:
-            self.Threads =  threads.Thread(t=1)
-            self.Threads.finishSignal.connect(self.Change)
-            self.Threads.start()
-
-    #必应词典
-    def bing(self,a=""):
-        self.browser.get(f'https://cn.bing.com/dict/search?q={a}')
-        elem = self.browser.find_element(By.CLASS_NAME, 'lf_area').get_attribute('outerHTML')
-        self.Bing_Dict.setHtml(elem)
-    
-    #海词    
-    def hidi(self,a=""):
-        self.browser.get(f'https://dict.cn/{a}')
-        elem = self.browser.find_element(By.CLASS_NAME, 'main').get_attribute('outerHTML')
-        self.Hi_Dict.setHtml(elem)
-    
-    #爱词霸
-    def ici(self,a=""):
-        self.browser.get(f'https://www.iciba.com/word?w={a}')
-        elem = self.browser.find_element(By.CLASS_NAME, 'Content_center__z9WQY').get_attribute('outerHTML')
-        self.Jinshan_Dict.setHtml(elem)
+    def dicts(self):
+            #有道翻译
+            means = requests.get("http://fanyi.youdao.com/openapi.do?keyfrom=neverland&key=969918857&type=data&doctype=json&version=1.1&q="+a)
+            json2 = json.loads(means.text)
+            if len(json2) == 5: 
+                if len(json2['basic']) == 4:          
+                    a = "BrE:/"+json2['basic']['uk-phonetic']+"/"
+                    b = "AmE:/"+json2['basic']['us-phonetic']+"/"
+                    self.pushButton_2.setText(a)
+                    self.pushButton_2.setEnabled(True)
+                    self.pushButton_3.setText(b)
+                    self.pushButton_3.setEnabled(True)
+                    c = json2['basic']['explains']
+                    if len(c) > 1:
+                        for i in range(len(c)):
+                            self.textBrowser.append(c[i])
+                    else:
+                        self.textBrowser.append(c[0])
+            else:
+                self.Threads =  threads.Thread(t=1)
+                self.Threads.finishSignal.connect(self.Change)
+                self.Threads.start()
+            #必应词典
+            self.browser.get(f'https://cn.bing.com/dict/search?q={a}')
+            elem = self.browser.find_element(By.CLASS_NAME, 'lf_area').get_attribute('outerHTML')
+            self.textBrowser_4.setHtml(elem)
+            #海词    
+            self.browser.get(f'https://dict.cn/{a}')
+            elem = self.browser.find_element(By.CLASS_NAME, 'main').get_attribute('outerHTML')
+            self.textBrowser_2.setHtml(elem)
+            #爱词霸
+            self.browser.get(f'https://www.iciba.com/word?w={a}')
+            elem = self.browser.find_element(By.CLASS_NAME, 'Content_center__z9WQY').get_attribute('outerHTML')
+            self.textBrowser_3.setHtml(elem)
     
     def showPic(self):
         if self.checkBox.checkState() == Qt.CheckState.Checked:
             self.label.show()
+            self.pushButton_5.setEnabled(True)
+            self.pushButton_4.setEnabled(True)
         elif self.checkBox.checkState() == Qt.CheckState.Unchecked:
             self.label.hide()
-
-    def pgup(self):
-        if self.stackedWidget.currentIndex() == 0:
-            self.pushButton_10.setEnabled(False)
-        else:
-            self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()-1)
-            self.pushButton_8.setEnabled(True)
-    def pgdn(self):
-        if self.stackedWidget.currentIndex() == 1:
-            self.pushButton_8.setEnabled(False)
-        else:
-            self.stackedWidget.setCurrentIndex(self.stackedWidget.currentIndex()+1)
-            self.pushButton_10.setEnabled(True)
+            self.pushButton_5.setEnabled(False)
+            self.pushButton_4.setEnabled(False)
 
     def Change(self, num=3):
         a = ""
@@ -190,10 +169,37 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.lineEdit.setPlaceholderText(a)
         return date
 
-    def configs(self):
-        self.a = config.Config()
-        self.a.show()
-
+    def selectionChange(self,t=4):
+        match t:
+            case 0:
+                self.stackedWidget.setCurrentIndex(0)
+                self.selection_Youdao.setFont(QFont("Arial",12,80))
+                self.selection_Youdao.setText("<u>Youdao</u>")
+                self.selection_Iciba.setFont(QFont("Arial",9))
+                self.selection_Haici.setFont(QFont("Arial",9))
+                self.selection_Bing.setFont(QFont("Arial",9))
+            case 1:
+                self.stackedWidget.setCurrentIndex(1)
+                self.selection_Haici.setFont(QFont("Arial",12,80))
+                self.selection_Haici.setText("<u>Haici</u>")
+                self.selection_Youdao.setFont(QFont("Arial",9))
+                self.selection_Iciba.setFont(QFont("Arial",9))
+                self.selection_Bing.setFont(QFont("Arial",9))
+            case 2:
+                self.stackedWidget.setCurrentIndex(2)
+                self.selection_Iciba.setFont(QFont("Arial",12,80))
+                self.selection_Iciba.setText("<u>Iciba</u>")
+                self.selection_Youdao.setFont(QFont("Arial",9))
+                self.selection_Haici.setFont(QFont("Arial",9))
+                self.selection_Bing.setFont(QFont("Arial",9))
+            case 3:
+                self.stackedWidget.setCurrentIndex(3)
+                self.selection_Bing.setFont(QFont("Arial",12,80))
+                self.selection_Bing.setText("<u>Bing</u>")
+                self.selection_Iciba.setFont(QFont("Arial",9))
+                self.selection_Haici.setFont(QFont("Arial",9))
+                self.selection_Youdao.setFont(QFont("Arial",9))
+    
     '''def clear(self):
         self.plainTextEdit.clear()
         self.textBrowser.clear()'''
@@ -231,14 +237,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.label_2.setText(a)
                 self.tabWidget.setCurrentIndex(1)
                 if requests.get('https://www.baidu.com').status_code == 200:
-                    self.Hi_Dict.clear()
-                    self.Youdao_Dict.clear()
-                    self.Bing_Dict.clear()
-                    self.Jinshan_Dict.clear()
-                    self.ydtran(a)
-                    self.bing(a)
-                    self.ici(a)
-                    self.hidi(a)
+                    1
                 else:
                     self.Threads =  threads.Thread(t=2)
                     self.Threads.finishSignal.connect(self.Change)
@@ -309,7 +308,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         pic2 = json1['picture2'].replace("\\","")
                         res = requests.get(pic2)
                         img = QImage.fromData(res.content)
-                        #size = QSize(self.tabWidget.width())
                         self.label.setPixmap(QPixmap.fromImage(img))
                     self.checkBox.setEnabled(True)
                     self.checkBox.setChecked(True)
